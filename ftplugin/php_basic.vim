@@ -6,8 +6,20 @@ setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 setlocal number
 
 " Show trailing whitespaces.
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
+highlight BadForm ctermbg=red guibg=red
+autocmd BufWinEnter * call clearmatches()
+autocmd BufWinEnter * let w:m1=matchadd('BadForm', '\s\+$', -1)
+autocmd BufWinEnter * let w:m2=matchadd('BadForm', '^[^\/]*\n[^\:]*\/\/\s*[a-z].*$', -1)
+autocmd BufWinEnter * let w:m3=matchadd('BadForm', '\(^\|[^:]\)\/\/.*[^.?!]\n\w*\([^\/ ]\|$\)', -1)
+autocmd InsertEnter * call clearmatches()
+autocmd InsertEnter * let w:m3=matchadd('BadForm', '\(^\|[^:]\)\/\/.*[^.?!]\%#\@<!\n\w*\([^\/ ]\|$\)', -1)
+autocmd InsertEnter * let w:m2=matchadd('BadForm', '^[^\/]*\n[^\:]*\/\/\s*[a-z].*\%#\@<!$', -1)
+autocmd InsertEnter * let w:m1=matchadd('BadForm', '\s\+\%#\@<!$', -1)
+autocmd InsertLeave * call clearmatches()
+autocmd InsertLeave * let w:m3=matchadd('BadForm', '\(^\|[^:]\)\/\/.*[^.?!]\n\w*\([^\/ ]\|$\)', -1)
+autocmd InsertLeave * let w:m2=matchadd('BadForm', '^[^\/]*\n[^\:]*\/\/\s*[a-z].*$', -1)
+autocmd InsertLeave * let w:m1=matchadd('BadForm', '\s\+$', -1)
+autocmd BufWinLeave * call clearmatches()
 
 " Is ctags available?.
 let s:ctagsavailable = system('which ctags-exuberant 2> /dev/null')
