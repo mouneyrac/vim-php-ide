@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # File name depending on $PWD.
-RAWPWDHASH=`md5sum <<EOF
+RAWPWDHASH=`md5 -r <<EOF
 $PWD
 EOF`
 PWDHASH="${RAWPWDHASH%% *}"
