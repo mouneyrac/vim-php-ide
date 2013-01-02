@@ -5,7 +5,7 @@ set ruler
 set laststatus=2
 
 " Show line number.
-setlocal number
+set number
 
 " Support QuickFix for Ggrep.
 autocmd QuickFixCmdPost *grep* cwindow
@@ -49,4 +49,6 @@ autocmd InsertLeave <buffer> se nopaste
 " Pathogen to install plugins as git submodules.
 call pathogen#infect()
 
-color jellybeans
+set background=light
+colorscheme solarized
+
